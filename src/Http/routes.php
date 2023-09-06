@@ -23,11 +23,11 @@ Route::group([
     'namespace'  => 'Warlof\Seat\Connector\Drivers\Discord\Http\Controllers',
     'prefix'     => 'seat-connector',
     'middleware' => ['web', 'auth', 'locale'],
-], function () {
+], function (): void {
 
     Route::group([
         'prefix' => 'registration',
-    ], function () {
+    ], function (): void {
 
         Route::get('/discord', [
             'as'   => 'seat-connector.drivers.discord.registration',
@@ -44,7 +44,7 @@ Route::group([
     Route::group([
         'prefix' => 'settings',
         'middleware' => 'can:global.superuser',
-    ], function () {
+    ], function (): void {
 
         Route::post('/discord', [
             'as' => 'seat-connector.drivers.discord.settings',

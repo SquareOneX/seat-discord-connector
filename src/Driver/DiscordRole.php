@@ -33,27 +33,19 @@ use Warlof\Seat\Connector\Exceptions\DriverException;
  */
 class DiscordRole implements ISet
 {
-    /**
-     * @var string
-     */
-    private $id;
+    private string $id;
 
-    /**
-     * @var string
-     */
-    private $name;
+    private string $name;
 
     /**
      * @var \Warlof\Seat\Connector\Drivers\IUser[]
      */
-    private $members;
+    private \Illuminate\Support\Collection $members;
 
     /**
      * DiscordRole constructor.
-     *
-     * @param array $attributes
      */
-    public function __construct($attributes = [])
+    public function __construct(array $attributes = [])
     {
         $this->members = collect();
         $this->hydrate($attributes);
@@ -84,9 +76,7 @@ class DiscordRole implements ISet
         if ($this->members->isEmpty()) {
             $users = DiscordClient::getInstance()->getUsers();
 
-            $this->members = collect(array_filter($users, function (IUser $user) {
-                return in_array($this, $user->getSets());
-            }));
+            $this->members = collect(array_filter($users, fn(IUser $user): bool => in_array($this, $user->getSets())));
         }
 
         return $this->members->toArray();
@@ -144,7 +134,6 @@ class DiscordRole implements ISet
     }
 
     /**
-     * @param array $attributes
      * @return \Warlof\Seat\Connector\Drivers\Discord\Driver\DiscordRole
      */
     public function hydrate(array $attributes = []): DiscordRole

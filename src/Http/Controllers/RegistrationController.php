@@ -40,11 +40,11 @@ use Warlof\Seat\Connector\Models\User;
  */
 class RegistrationController extends Controller
 {
-    const SCOPES = [
+    final public const SCOPES = [
         'identify', 'guilds.join',
     ];
 
-    const SCOPES_WITH_EMAIL = [
+    final public const SCOPES_WITH_EMAIL = [
         'identify', 'email', 'guilds.join',
     ];
 
@@ -118,7 +118,6 @@ class RegistrationController extends Controller
     /**
      * Determine if there is another account linked to the registering one.
      *
-     * @param \Laravel\Socialite\Two\User $socialite_user
      * @return \Warlof\Seat\Connector\Models\User|null
      */
     private function getDuplicatedAccount(\Laravel\Socialite\Two\User $socialite_user): ?User
@@ -131,7 +130,6 @@ class RegistrationController extends Controller
 
     /**
      * @param $settings
-     * @param \Laravel\Socialite\Two\User $socialite_user
      * @return \Illuminate\Http\RedirectResponse
      * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \Warlof\Seat\Connector\Exceptions\DriverException
@@ -173,8 +171,6 @@ class RegistrationController extends Controller
     /**
      * Handle duplicate account response.
      *
-     * @param \Warlof\Seat\Connector\Models\User $duplicated_user
-     * @param \Laravel\Socialite\Two\User $socialite_user
      * @return \Illuminate\Http\RedirectResponse|void
      */
     private function handleDuplicateResponse(User $duplicated_user, \Laravel\Socialite\Two\User $socialite_user)
@@ -190,8 +186,6 @@ class RegistrationController extends Controller
     }
 
     /**
-     * @param \Warlof\Seat\Connector\Drivers\IClient $client
-     * @param \Warlof\Seat\Connector\Models\User $old_identity
      * @throws \Seat\Services\Exceptions\SettingException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
@@ -213,8 +207,8 @@ class RegistrationController extends Controller
         } catch (ClientException $e) {
             logger()->error(sprintf('[seat-connector][discord] %s', $e->getMessage()));
 
-            $body = $e->hasResponse() ? $e->getResponse()->getBody() : '{"code": 0}';
-            $error = json_decode($body);
+            $body = $e->hasResponse() ? $e->getResponse()->getBody()->getContents() : '{"code": 0}';
+            $error = json_decode($body, null, 512, JSON_THROW_ON_ERROR);
 
             if ($error->code == 10004) {
                 event(new EventLogger('discord', 'warning', 'registration',

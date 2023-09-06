@@ -39,24 +39,18 @@ use Warlof\Seat\Connector\Exceptions\InvalidDriverIdentityException;
  */
 class DiscordClient implements IClient
 {
-    CONST BASE_URI = 'https://discord.com/api';
+    final public CONST BASE_URI = 'https://discord.com/api';
 
-    CONST VERSION = 'v6';
+    final public CONST VERSION = 'v6';
 
-    /**
-     * @var \Warlof\Seat\Connector\Drivers\Discord\Driver\DiscordClient
-     */
-    private static $instance;
+    private static ?\Warlof\Seat\Connector\Drivers\Discord\Driver\DiscordClient $instance = null;
 
     /**
      * @var \GuzzleHttp\Client
      */
-    private $client;
+    private readonly object $client;
 
-    /**
-     * @var string
-     */
-    private $guild_id;
+    private readonly string $guild_id;
 
     /**
      * @var string
@@ -66,12 +60,12 @@ class DiscordClient implements IClient
     /**
      * @var \Warlof\Seat\Connector\Drivers\IUser[]
      */
-    private $members;
+    private readonly \Illuminate\Support\Collection $members;
 
     /**
      * @var \Warlof\Seat\Connector\Drivers\ISet[]
      */
-    private $roles;
+    private readonly \Illuminate\Support\Collection $roles;
 
     /**
      * @var string
@@ -80,8 +74,6 @@ class DiscordClient implements IClient
 
     /**
      * DiscordClient constructor.
-     *
-     * @param array $parameters
      */
     private function __construct(array $parameters)
     {
@@ -132,7 +124,7 @@ class DiscordClient implements IClient
     /**
      * Reset the instance
      */
-    public static function tearDown()
+    public static function tearDown(): void
     {
         self::$instance = null;
     }
@@ -174,7 +166,7 @@ class DiscordClient implements IClient
         } catch (ClientException $e) {
             logger()->error($e->getMessage(), $e->getTrace());
 
-            $error = json_decode($e->getResponse()->getBody());
+            $error = json_decode($e->getResponse()->getBody()->getContents(), null, 512, JSON_THROW_ON_ERROR);
 
             if (! is_null($error) && property_exists($error, 'code')) {
                 switch ($error->code) {
@@ -267,9 +259,6 @@ class DiscordClient implements IClient
     }
 
     /**
-     * @param string $method
-     * @param string $endpoint
-     * @param array $arguments
      * @return object
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
@@ -278,7 +267,7 @@ class DiscordClient implements IClient
         $uri = ltrim($endpoint, '/');
 
         foreach ($arguments as $uri_parameter => $value) {
-            if (strpos($uri, sprintf('{%s}', $uri_parameter)) === false)
+            if (!str_contains($uri, sprintf('{%s}', $uri_parameter)))
                 continue;
 
             $uri = str_replace(sprintf('{%s}', $uri_parameter), $value, $uri);
@@ -291,7 +280,7 @@ class DiscordClient implements IClient
             ]);
         } else {
             $response = $this->client->request($method, $uri, [
-                'body' => json_encode($arguments),
+                'body' => json_encode($arguments, JSON_THROW_ON_ERROR),
             ]);
         }
 
@@ -300,13 +289,13 @@ class DiscordClient implements IClient
                 $response->getStatusCode(), $response->getReasonPhrase(), $method, $uri)
         );
 
-        return json_decode($response->getBody(), true);
+        return json_decode($response->getBody()->getContents(), true, 512, JSON_THROW_ON_ERROR);
     }
 
     /**
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    private function seedMembers()
+    private function seedMembers(): void
     {
         $after = null;
 
@@ -342,7 +331,7 @@ class DiscordClient implements IClient
      * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \Warlof\Seat\Connector\Exceptions\DriverException
      */
-    private function seedRoles()
+    private function seedRoles(): void
     {
         $roles = DiscordClient::getInstance()->sendCall('GET', '/guilds/{guild.id}/roles', [
             'guild.id' => $this->guild_id,
