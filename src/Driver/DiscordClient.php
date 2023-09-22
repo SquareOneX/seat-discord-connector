@@ -267,8 +267,9 @@ class DiscordClient implements IClient
         $uri = ltrim($endpoint, '/');
 
         foreach ($arguments as $uri_parameter => $value) {
-            if (!str_contains($uri, sprintf('{%s}', $uri_parameter)))
+            if (!str_contains($uri, sprintf('{%s}', $uri_parameter))) {
                 continue;
+            }
 
             $uri = str_replace(sprintf('{%s}', $uri_parameter), $value, $uri);
             Arr::pull($arguments, $uri_parameter);
@@ -285,9 +286,18 @@ class DiscordClient implements IClient
         }
 
         logger()->debug(
-            sprintf('[seat-connector][discord] [http %d, %s] %s -> /%s',
-                $response->getStatusCode(), $response->getReasonPhrase(), $method, $uri)
+            sprintf(
+                '[seat-connector][discord] [http %d, %s] %s -> /%s',
+                $response->getStatusCode(),
+                $response->getReasonPhrase(),
+                $method,
+                $uri
+            )
         );
+
+        if ($response->getStatusCode() === 204) {
+            return null;
+        }
 
         return json_decode($response->getBody()->getContents(), true, 512, JSON_THROW_ON_ERROR);
     }
