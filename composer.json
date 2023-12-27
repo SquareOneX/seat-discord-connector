@@ -14,15 +14,9 @@
             "Warlof\\Seat\\Connector\\Drivers\\Discord\\Tests\\": "tests/"
         }
     },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/zenobio93/seat-connector.git"
-        }
-    ],
     "require": {
         "ext-json": "*",
-        "warlof/seat-connector": "3.0.x-dev",
+        "warlof/seat-connector": "^3.0",
         "socialiteproviders/discord": "^4.2"
     },
     "require-dev": {
@@ -35,6 +29,10 @@
         {
             "name": "Warlof Tutsimo",
             "email": "loic.leuilliot@gmail.com"
+        },
+        {
+            "name": "Zenobio93",
+            "email": "development@hellmund.eu"
         }
     ],
     "extra": {
