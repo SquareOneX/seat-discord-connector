@@ -17,7 +17,11 @@
     "require": {
         "ext-json": "*",
         "warlof/seat-connector": "^3.0",
-        "socialiteproviders/discord": "^4.2"
+        "socialiteproviders/discord": "^4.2",
+        "eveseat/services": "^5.0",
+        "eveseat/eveapi": "^5.0",
+        "eveseat/web": "^5.0",
+        "eveseat/api": "^5.0"
     },
     "require-dev": {
         "orchestra/testbench": "^8.0",
