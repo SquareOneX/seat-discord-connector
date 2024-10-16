@@ -35,7 +35,7 @@ class DiscordConnectorServiceProvider extends AbstractSeatPlugin
      *
      * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         $this->addRoutes();
         $this->addTranslations();
@@ -48,7 +48,7 @@ class DiscordConnectorServiceProvider extends AbstractSeatPlugin
      *
      * @return void
      */
-    public function register()
+    public function register(): void
     {
         $this->mergeConfigFrom(
             __DIR__ . '/Config/discord-connector.config.php', 'discord-connector.config');
@@ -69,7 +69,7 @@ class DiscordConnectorServiceProvider extends AbstractSeatPlugin
     /**
      * Import routes
      */
-    private function addRoutes()
+    private function addRoutes(): void
     {
         if (! $this->app->routesAreCached()) {
             include __DIR__ . '/Http/routes.php';
@@ -79,7 +79,7 @@ class DiscordConnectorServiceProvider extends AbstractSeatPlugin
     /**
      * Import translations
      */
-    private function addTranslations()
+    private function addTranslations(): void
     {
         $this->loadTranslationsFrom(__DIR__ . '/lang', 'seat-connector-discord');
     }
@@ -87,7 +87,7 @@ class DiscordConnectorServiceProvider extends AbstractSeatPlugin
     /**
      * Register Socialite Discord Driver
      */
-    private function registerSocialiteDiscordDriver()
+    private function registerSocialiteDiscordDriver(): void
     {
         Event::listen(\SocialiteProviders\Manager\SocialiteWasCalled::class, 'SocialiteProviders\\Discord\\DiscordExtendSocialite@handle');
     }

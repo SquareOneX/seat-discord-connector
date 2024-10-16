@@ -35,11 +35,11 @@ use Warlof\Seat\Connector\Drivers\Discord\Helpers\Helper;
  */
 class SettingsController extends Controller
 {
-    const SCOPES = [
+    final public const SCOPES = [
         'bot', 'identify', 'guilds.join',
     ];
 
-    const BOT_PERMISSIONS = [
+    final public const BOT_PERMISSIONS = [
         'MANAGE_ROLES'          => 0x10000000,
         'KICK_MEMBERS'          => 0x00000002,
         'BAN_MEMBERS'           => 0x00000004,
@@ -49,7 +49,6 @@ class SettingsController extends Controller
     ];
 
     /**
-     * @param \Illuminate\Http\Request $request
      * @return mixed
      * @throws \Seat\Services\Exceptions\SettingException
      * @throws \Illuminate\Validation\ValidationException

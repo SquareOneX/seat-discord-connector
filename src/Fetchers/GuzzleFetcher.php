@@ -35,10 +35,7 @@ use Warlof\Seat\Connector\Drivers\Discord\Http\Middleware\Throttlers\RateLimiter
  */
 class GuzzleFetcher implements IFetcher
 {
-    /**
-     * @var \GuzzleHttp\Client
-     */
-    private $client;
+    private readonly \GuzzleHttp\Client $client;
 
     /**
      * GuzzleFetcher constructor.
@@ -50,7 +47,7 @@ class GuzzleFetcher implements IFetcher
     {
         try {
             $version = InstalledVersions::getPrettyVersion('warlof/seat-discord-connector');
-        } catch (OutOfBoundsException $e) {
+        } catch (OutOfBoundsException) {
             $version = 'dev';
         }
         

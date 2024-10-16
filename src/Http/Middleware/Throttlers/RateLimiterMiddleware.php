@@ -33,7 +33,7 @@ use Psr\Http\Message\UriInterface;
  */
 class RateLimiterMiddleware
 {
-    const MAP_ENDPOINTS = [
+    final public const MAP_ENDPOINTS = [
         '/guilds/{guild.id}' => '/\/api\/guilds\/[0-9]+/i',
         '/guilds/{guild.id}/members' => '/\/api\/guilds\/[0-9]+\/members/i',
         '/guilds/{guild.id}/members/{user.id}' => '/\/api\/guilds\/[0-9]+\/members\/[0-9]+/i',
@@ -41,10 +41,9 @@ class RateLimiterMiddleware
         '/guilds/{guild.id}/roles' => '/\/api\/guilds\/[0-9]+\/roles/i',
     ];
 
-    const REDIS_CACHE_PREFIX = 'seat:seat-connector.drivers.discord';
+    final public const REDIS_CACHE_PREFIX = 'seat:seat-connector.drivers.discord';
 
     /**
-     * @param callable $handler
      * @return \Closure
      */
     public function __invoke(callable $handler)
@@ -73,7 +72,7 @@ class RateLimiterMiddleware
             // send the request and retrieve response
             $promise = $handler($request, $options);
 
-            return $promise->then(function (ResponseInterface $response) use ($key) {
+            return $promise->then(function (ResponseInterface $response) use ($key): ResponseInterface {
 
                 // update cache entry for the endpoint using new RateLimit / RateReset values
                 $metadata = $this->getEndpointMetadata($response);
@@ -86,11 +85,10 @@ class RateLimiterMiddleware
     }
 
     /**
-     * @param \Psr\Http\Message\UriInterface $uri
      * @param string $type
      * @return string
      */
-    private function getCacheKey(UriInterface $uri)
+    private function getCacheKey(UriInterface $uri): string
     {
         $match_pattern = $uri->getPath();
 
@@ -108,13 +106,12 @@ class RateLimiterMiddleware
     }
 
     /**
-     * @param \Psr\Http\Message\ResponseInterface $response
      * @return object
      */
     private function getEndpointMetadata(ResponseInterface $response)
     {
-        $remaining = intval($response->getHeaderLine('X-RateLimit-Remaining')) ?: 0;
-        $reset = intval($response->getHeaderLine('X-RateLimit-Reset')) ?: 0;
+        $remaining = (int) $response->getHeaderLine('X-RateLimit-Remaining') ?: 0;
+        $reset = (int) $response->getHeaderLine('X-RateLimit-Reset') ?: 0;
 
         return (object) [
             'reset' => $reset,

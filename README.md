@@ -3,15 +3,17 @@ A [SeAT](https://github.com/eveseat/seat) plugin which maintain user access on a
 
 [![Latest Unstable Version](https://poser.pugx.org/warlof/seat-discord-connector/v/unstable)](https://packagist.org/packages/warlof/seat-discord-connector)
 [![Latest Stable Version](https://poser.pugx.org/warlof/seat-discord-connector/v/stable)](https://packagist.org/packages/warlof/seat-discord-connector)
-[![Maintainability](https://api.codeclimate.com/v1/badges/04e249a4704e895a08fa/maintainability)](https://codeclimate.com/github/warlof/seat-discord-connector/maintainability)
-[![License](https://img.shields.io/badge/license-GPLv3-blue.svg?style=flat-square)](https://raw.githubusercontent.com/warlof/seat-discord-connector/master/LICENSE)
+[![Maintainability](https://api.codeclimate.com/v1/badges/311526bc5675980c66e8/maintainability)](https://codeclimate.com/github/zenobio93/seat-discord-connector/maintainability)
+[![License](https://img.shields.io/badge/license-GPLv3-blue.svg?style=flat-square)](https://raw.githubusercontent.com/zenobio93/seat-discord-connector/master/LICENSE)
+
+Thanks to [Warlof Tutsimo](https://github.com/warlof) for writing the original plugin. Development has been taken over by zenobio93 from 23. December 2023. To find the applied changes, please consult the git history.
 
 ## Setup
 
 ## Create Application
  - Go to the [following url](https://discordapp.com/developers/applications) in order to create an application and retrieve bot token.
  - Give it a name and suitable description; so user will be able to know what it is related to later.
- - On sidebar, click on **OAuth2** and hit the **Add Redirect** button twice and seed spawned field with the address bellow :
+ - On sidebar, click on **Oauth2** > **General** and hit the **Add Redirect** button twice and seed spawned field with the address bellow :
    - `{seat-public-url}/seat-connector/registration/discord/callback`
    - `{seat-public-url}/seat-connector/settings/discord/callback`
  - On sidebar click on **Bot** and hit the **Add Bot** button
@@ -35,7 +37,7 @@ Once your application has been created, we will need to retrieve credentials whi
 Go on the [following url](https://discordapp.com/developers/applications) and click on the box which is matching to the previously created application.
 
 Take a note of the following information :
- - From the sidebar, under **General Information**
+ - From the sidebar, under **Oauth2** > **General**
    - `Client ID` which is a displayed number
    - `Client Secret` which is a strange text (hit the **Click to reveal** link)
  - From the sidebar, under **Bot**

@@ -16,17 +16,27 @@
     },
     "require": {
         "ext-json": "*",
-        "warlof/seat-connector": "^2.0",
-        "socialiteproviders/discord": "^v2.0"
+        "warlof/seat-connector": "^3.0",
+        "socialiteproviders/discord": "^4.2",
+        "eveseat/services": "^5.0",
+        "eveseat/eveapi": "^5.0",
+        "eveseat/web": "^5.0",
+        "eveseat/api": "^5.0"
     },
     "require-dev": {
-        "orchestra/testbench": "^4.0"
+        "orchestra/testbench": "^8.0",
+        "rector/rector": "^0.18.2",
+        "driftingly/rector-laravel": "^0.24.1"
     },
     "license": "GPL-3.0-or-later",
     "authors": [
         {
             "name": "Warlof Tutsimo",
             "email": "loic.leuilliot@gmail.com"
+        },
+        {
+            "name": "Zenobio93",
+            "email": "development@hellmund.eu"
         }
     ],
     "extra": {

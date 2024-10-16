@@ -36,39 +36,27 @@ use Warlof\Seat\Connector\Exceptions\DriverException;
  */
 class DiscordMember implements IUser
 {
-    /**
-     * @var string
-     */
-    private $id;
+    private string $id;
 
-    /**
-     * @var string
-     */
-    private $uid;
+    private string $uid;
 
-    /**
-     * @var string
-     */
-    private $nick;
+    private string $nick;
 
     /**
      * @var string[]
      */
-    private $role_ids;
+    private $role_ids = [];
 
     /**
      * @var \Warlof\Seat\Connector\Drivers\ISet[]
      */
-    private $roles;
+    private readonly \Illuminate\Support\Collection $roles;
 
     /**
      * DiscordMember constructor.
-     *
-     * @param array $attributes
      */
     public function __construct(array $attributes = [])
     {
-        $this->role_ids = [];
         $this->roles    = collect();
         $this->hydrate($attributes);
     }
@@ -155,7 +143,6 @@ class DiscordMember implements IUser
     }
 
     /**
-     * @param array $attributes
      * @return \Warlof\Seat\Connector\Drivers\Discord\Driver\DiscordMember
      */
     public function hydrate(array $attributes = []): DiscordMember

@@ -33,23 +33,22 @@ class Helper
      *
      * @var int
      */
-    const EVERYONE = 0x00000000;
+    final public const EVERYONE = 0x00000000;
     /**
      * The Discord Administrator permission
      *
      * @var int
      */
-    const ADMINISTRATOR = 0x00000008;
+    final public const ADMINISTRATOR = 0x00000008;
     /**
      * The Discord nickname length limit.
      *
      * @var int
      */
-    const NICKNAME_LENGTH_LIMIT = 32;
+    final public const NICKNAME_LENGTH_LIMIT = 32;
     /**
      * Determine the value based on a list of masks by applying bitwise OR
      *
-     * @param array $masks
      * @return int
      */
     public static function arrayBitwiseOr(array $masks): int
